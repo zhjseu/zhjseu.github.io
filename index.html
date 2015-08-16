@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>程序员的自我修养 by zhjseu</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="without-description">
+        <h1>程序员的自我修养</h1>
+        <p></p>
+        <p class="view"><a href="https://github.com/zhjseu">View the Project on GitHub <small>zhjseu</small></a></p>
+        <ul>
+          <li class="single"><a href="https://github.com/zhjseu/zhjseu.github.io">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><code>//第一章 数值表示</code></p>
+
+<p><code>#补码#，机器内使用补码表示数字。</code></p>
+
+<p><code>#原码转补码#，正数都一样，负数符号位不变其余位取反再加1。</code></p>
+
+<p><code>#补码转原码#，正数都一样，负数减1再符号位不变其余位取反。</code></p>
+
+<p><code>#有符号数和无符号数之间的转换#，以左值位数大小确定右值位数大小，右值先用原码表示再转换为补码表示，右值在此补码上转为有符号还是无符号的原码。</code></p>
+
+<p><code>#char，unsigned char#，[-128 ~ 127]，[0 ～ 256]，10000000表示-128（特殊）。</code></p>
+
+<p><code>//第二章 编译和链接</code></p>
+
+<p><code>##程序到可执行文件的过程，预处理 （cpp：.c -&gt; .i）&gt;&gt; 编译（cc1/cc1plus： .i -&gt; .s）&gt;&gt; 汇编(as： .s -&gt; .o) &gt;&gt; 链接(ld)</code></p>
+
+<p><code>#预处理#，删除注释。将包含文件插入#include处。扩展宏（#define）。处理条件编译指令（#ifdef，#eldef，#endif等）。</code></p>
+
+<p><code>#编译#，将预处理完的文件生成汇编代码文件（扫描，语法分析，语义分析，源代码优化，代码生成，目标代码优化）</code></p>
+
+<p><code>#汇编#，将汇编代码文件生成机器可执行的指令文件。</code></p>
+
+<p><code>#链接#，将各个模块相互引用的部分正确衔接。</code></p>
+
+<p><code>//第三章 目标文件里有什么</code></p>
+
+<p><code>#目标文件结构#，文件头，段表，代码段.text，数据段.data，bss段.bss，只读数据段.rodata，重定位段.rel.text/.rel.data，符号表.symtab，字符串表.strtab。</code></p>
+
+<p><code>#文件头#，描述文件属性，如目标硬件，目标操作系统，入口地址等，还指出段表在文件中的偏移量。</code></p>
+
+<p><code>##段表#，描述了各个段的信息如段名，段长度，在文件中的偏移量，读写权限等，连接器和装载器都通过段表来访问各个段的属性。</code></p>
+
+<p><code>#数据段#，已初始化的全局变量和局部静态变量。</code></p>
+
+<p><code>#bss段#，未初始化的全局变量和局部静态变量。</code></p>
+
+<p><code>#只读数据段#，如字符串常量，const修饰的变量等。</code></p>
+
+<p><code>#重定位段#，所有引用到外部符号的地址都要进行重定位，重定位发生在链接阶段，每个需要重定位的代码段或数据段都有相应重定位段，记录该段需要重定位的信息（并非符号表中所有符号到要重地位）。</code></p>
+
+<p><code>#符号表#，在链接中，目标文件相互拼合实际上是目标文件之间对函数和变量地址端引用，符号表记录了目标文件中用到的所有符号和其对应的值（对于函数和变量符号来说其值就是地址）。</code></p>
+
+<p><code>#字符串表#，记录如符号，段名等字符串（区别于数据段的字符串）。因为字符串长度不定，用固定结构表示比较困难，因此把字符串集中起来放到一个表中，通过字符串在表中端偏移来引用。</code></p>
+
+<p><code>//第四章 静态链接</code></p>
+
+<p><code>#静态链接#，把所有模块链接成一个单独的可执行文件。空间和地址分配：链接器获取所有输入目标文件的段长度，计算出输出文件中各个合并段的长度与位置，并建立映射关系。符号解析和重定位：完成空间和地址分配后就可以确定所有符号的虚地址了，链接器根据符号地址对需要重定位的指令进行地址修正。</code></p>
+
+<p><code>#静态链接缺点#，静态链接中多个程序内包含相同的共用函数库，浪费内存。一旦有模块更新整个程序要重新链接发布，模块更新困难。</code></p>
+
+<p><code>//第六章 可执行文件的装载与进程</code></p>
+
+<p><code>#静态装入和动态装入#，将程序运行所需的指令和数据全部装入内存中叫静态装入法。利用程序局部性原理，将程序最常用的部分驻留在内存，而不太常用的先存放在硬盘中叫动态装入法。</code></p>
+
+<p><code>#虚拟地址空间和物理内存空间#，每个进程拥有独立的虚拟地址空间，操作系统通过文件头信息建立起可执行文件与进程虚拟地址空间的映射关系。内存管理单元（MMU）将虚拟地址空间映射到物理内存空间。</code></p>
+
+<p><code>#虚拟地址空间分段#，代码段，数据段，bss段，栈（存放函数调用时所需保存的信息，如局部变量，函数参数，返回地址等），堆（存放动态分配的内存）。</code></p>
+
+<p><code>#可执行文件的段权限与虚拟地址空间的映射#，按读写权限，将可执行文件的只读的段（如.rodata，.text）映射到虚拟内存的代码段，将可读可写的段映射到虚拟内存的数据段（如.bss，.data），虚拟内存的数据区可以分为数据段和bss段。。操作系统将相同权限的段合并映射到同虚拟地址空间的同一段中，这样可以减少页内部碎片（因为每个段长度都应该是页长度的整数倍）。</code></p>
+
+<p><code>//第七章 动态链接（难）</code></p>
+
+<p><code>#动态链接#，把程序的模块相互分割开来形成独立的文件，等到程序要运行时才进行链接。相对于静态链接，动态链接把链接过程从程序装载前推迟到程序装载时。</code></p>
+
+<p><code>#共享动态链接库#，在物理内存中只有一份共享的动态链接库。在虚拟地址空间使用的共享库在物理内存中存在时无需在载入物理内存中。</code></p>
+
+<p><code>#共享对象#，当共享对象被多个进程同时加载时，它的数据部分会在每个进程中都有独立的副本。</code></p>
+
+<p><code>//第八章 Linux共享库的组织</code></p>
+
+<p><code>#环境变量#，指定操作系统运行环境的一些参数，如系统文件夹位置，应用程序的共享库的查找路径等。</code></p>
+
+<p><code>##/lib，存放系统最关键和基础的共享库，如系统启动时需要的库，C语言运行时需要的库等。</code></p>
+
+<p><code>##/usr/lib，存放程序开发时需要用到的库。</code></p>
+
+<p><code>##/usr/local/lib，第三方的应用程序的库。</code></p>
+
+<p><code>//第十一章 运行库</code></p>
+
+<p><code>#printf的狂乱输出（stdarg宏）#，</code></p>
+
+<p><code>va_list：一个指向各个不定参数的指针。</code>
+<code>#define va_list char *</code></p>
+
+<p><code>va_start：定义指针指向第一个不定参数。</code>
+<code>#define va_start(ap, arg) (ap = (va_list)&amp;arg + sizeof(arg)) //ap是va_list类型成员，arg是省略号前最后一个参数</code></p>
+
+<p><code>va_arg：获得不定参数值，并将不定参数指针移向下一个参数。</code>
+<code>#define var_arg(ap, t) (*(t *)((ap += sizeof(t)) - sizeof(t))) //t是该参数的类型</code></p>
+
+<p><code>va_end：将指针清0。</code>
+<code>#define va_end(ap) (ap = (va_list)0)</code></p>
+      </section>
+    </div>
+    <footer>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
